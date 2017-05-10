@@ -1,15 +1,13 @@
+
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-import java.io.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 /**
  *
  * @author vinodkumar
@@ -32,48 +30,82 @@ public class Home extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
+        jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(500, 300));
+        setSize(new java.awt.Dimension(500, 300));
 
-        jButton1.setText("jButton1");
+        jLabel1.setText("...");
+
+        jProgressBar1.setStringPainted(true);
+
+        jButton1.setText("Upload Files");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("jLabel1");
+        jLabel2.setBackground(new java.awt.Color(153, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Muna", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel2.setText("File Processor");
 
-        jProgressBar1.setStringPainted(true);
+        jLabel3.setFont(new java.awt.Font("Kohinoor Devanagari", 1, 13)); // NOI18N
+        jLabel3.setText("Instructions");
+
+        jLabel4.setText("File type: CSV");
+
+        jLabel5.setText("Multiple files allowed");
+
+        jLabel6.setText("Output folder will be created in same directory");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(27, 27, 27))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addGap(129, 129, 129))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
@@ -82,204 +114,34 @@ public class Home extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
-        String[] files = {"test", "test1", "test2"};
+        JFileChooser chooser= new JFileChooser();
+        chooser.setMultiSelectionEnabled(true);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setFileFilter(new FileNameExtensionFilter("Comma Seperated Files", "csv"));
         
-        for (String file : files) {
-            
-            
-            jLabel1.setText("Processing file: "+ file);
-            this.process_file("/Users/vinodkumar/Desktop/ana/"+file+".csv");
-        }
+        int returnVal = chooser.showOpenDialog(null);
+        
+        //Do nothing if not selected file/s or selected cancel
+        if (returnVal == 1) return; 
+      
+        File[] selectedFiles = chooser.getSelectedFiles();
+        
+        //Disable button once started processing
+        jButton1.setEnabled(false);
+        jButton1.setText("Processing...");
         
         
+        
+        Thread thread = new Thread() {
+            public void run() {
+                CSVTranslate ct = new CSVTranslate(jButton1,jLabel1,jProgressBar1);
+                ct.process(selectedFiles);
+            }
+        };
+        thread.start();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    public void process_file(String filename){
-        
-        final long startTime = System.currentTimeMillis();
-       
-        Connection c = null;
-        Statement stmt1 = null;
-        Statement stmt2 = null;
-        try {
-          Class.forName("org.sqlite.JDBC");
-          c = DriverManager.getConnection("jdbc:sqlite:test.db");
-          System.out.println("Opened database successfully");
-          
-          // Drop table
-          stmt1 = c.createStatement();
-          String sql1 = "DROP TABLE IF EXISTS BATCHPROCESS ";
-          stmt1.executeUpdate(sql1);
-          stmt1.close();
-          
-          //
-          stmt2 = c.createStatement();
-          String sql2 = "CREATE TABLE BATCHPROCESS " +
-                        "(COL1   varchar(150), " + 
-                        " COL2   varchar(150), " + 
-                        " COL3   varchar(150), " + 
-                        " COL4   varchar(150), " + 
-                        " COL5   varchar(150), " + 
-                        " COL6   varchar(150), " + 
-                        " COL7   varchar(150), " + 
-                        " COL8   varchar(150), " + 
-                        " COL9   varchar(150), " + 
-                        " COL10   varchar(150), " + 
-                        " COL11   varchar(150), " + 
-                        " COL12   varchar(150), " + 
-                        " COL13   varchar(150), " + 
-                        " COL14   varchar(150), " + 
-                        " COL15   varchar(150), " + 
-                        " COL16   varchar(150), " + 
-                        " COL17   varchar(150))"; 
-          stmt2.executeUpdate(sql2);
-          stmt2.close();
-          //c.close();
-        } catch ( Exception e ) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-          System.exit(0);
-        }
-        
-        System.out.println("Table created successfully");
-       
    
-        
-        //Read CSV file and insert to table
-        BufferedReader br = null;
-        String line = "";
-   
-
-        try {
-            
-            
-            br = new BufferedReader(new FileReader(filename));
-            
-            int batch_size = 1000; //change to see time
-            int counter = 1;
-            
-            while ((line = br.readLine()) != null) {
-
-                String[] data = line.split(",");
-
-                //System.out.println(data[16]);
-
-                
-                
-              
-                try {
-                    c.setAutoCommit(false);
-                    String query = "INSERT INTO BATCHPROCESS values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                    PreparedStatement ps = c.prepareStatement(query);
-                    ps.setString(1,data[0]);
-                    ps.setString(2,data[1]);
-                    ps.setString(3,data[2]);
-                    ps.setString(4,data[3]);
-                    ps.setString(5,data[4]);
-                    ps.setString(6,data[5]);
-                    ps.setString(7,data[6]);
-                    ps.setString(8,data[7]);
-                    ps.setString(9,data[8]);
-                    ps.setString(10,data[9]);
-                    ps.setString(11,data[10]);
-                    ps.setString(12,data[11]);
-                    ps.setString(13,data[12]);
-                    ps.setString(14,data[13]);
-                    ps.setString(15,data[14]);
-                    ps.setString(16,data[15]);
-                    ps.setString(17,data[16]);
-                    ps.executeUpdate();
-                    //ps.addBatch();
-                    System.out.println(counter);
-                    
-                    
-                   
-                            
-                    if (counter > batch_size){
-                        //ps.executeBatch();
-                        //counter = 1;
-                    }
-                    
-                           
-                } catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                    //Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                 //System.out.println(counter);
-                
-                counter++;
-            
-
-                
-
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        
-        
-        File output_file = new File("/Users/vinodkumar/Desktop/ana/output");
-        if (!output_file.exists()) {
-            output_file.mkdir();
-        }
-        
-        File f = new File(filename);
-        String of = f.getName();
-      
-        
-        try {
-            
-          FileWriter fw = new FileWriter(output_file+"/"+of);  
-          
-          // Drop table
-          stmt1 = c.createStatement();
-          String sql1 = "SELECT * FROM BATCHPROCESS ORDER BY COL7,COL6";
-          ResultSet rs = stmt1.executeQuery(sql1);
-       
-          while(rs.next()){
-         //Retrieve by column name
-         
-        
-         
-         
-         fw.append(rs.getString("COL1"));
-         fw.append(',');
-         fw.append(rs.getString("COL2"));
-         fw.append(',');
-         fw.append(rs.getString("COL3"));
-         fw.append('\n');
-         
-         
-         
-         
-           
-      }
-          
-        fw.flush();
-            fw.close();
-          
-          
-          stmt1.close();
-        } catch ( Exception e ) {
-          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-          System.exit(0);
-        } finally{
-            
-            try { c.close(); } catch (Exception e) { /* ignored */ }
-            
-        }
-        
-        final long endTime = System.currentTimeMillis();
-        System.out.println("Total execution time: " + (endTime - startTime) + "ms");
-        
-        
-        
-    }
-    
     /**
      * @param args the command line arguments
      */
@@ -321,6 +183,11 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JProgressBar jProgressBar1;
     // End of variables declaration//GEN-END:variables
 }
