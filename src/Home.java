@@ -44,7 +44,7 @@ public class Home extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(500, 300));
         setSize(new java.awt.Dimension(500, 300));
 
-        jLabel1.setText("...");
+        jLabel1.setText(".");
 
         jProgressBar1.setStringPainted(true);
 
@@ -56,16 +56,16 @@ public class Home extends javax.swing.JFrame {
         });
 
         jLabel2.setBackground(new java.awt.Color(153, 255, 255));
-        jLabel2.setFont(new java.awt.Font("Muna", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Myriad Pro", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 255));
         jLabel2.setText("File Processor");
 
         jLabel3.setFont(new java.awt.Font("Kohinoor Devanagari", 1, 13)); // NOI18N
         jLabel3.setText("Instructions");
 
-        jLabel4.setText("File type: CSV");
+        jLabel4.setText("Upload input CSV files.");
 
-        jLabel5.setText("Multiple files allowed");
+        jLabel5.setText("Keep header in file othewise first line will be removed from data");
 
         jLabel6.setText("Output folder will be created in same directory");
 
@@ -99,13 +99,13 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
 
         pack();

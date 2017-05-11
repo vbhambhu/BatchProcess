@@ -108,23 +108,10 @@ public class CSVTranslate  extends JFrame {
           //Create new table for data
           this.stmt = this.conn.createStatement();
           this.qry = "CREATE TABLE BATCHPROCESS " +
-                        "(COL1   varchar(150), " + 
-                        " COL2   varchar(150), " + 
-                        " COL3   varchar(150), " + 
-                        " COL4   varchar(150), " + 
-                        " COL5   varchar(150), " + 
-                        " COL6   varchar(150), " + 
-                        " COL7   varchar(150), " + 
-                        " COL8   varchar(150), " + 
-                        " COL9   varchar(150), " + 
-                        " COL10   varchar(150), " + 
-                        " COL11   varchar(150), " + 
-                        " COL12   varchar(150), " + 
-                        " COL13   varchar(150), " + 
-                        " COL14   varchar(150), " + 
-                        " COL15   varchar(150), " + 
-                        " COL16   varchar(150), " + 
-                        " COL17   varchar(150))";  
+                        "(TRACK_ID   INT(11), " + 
+                        " TRACK_TIME   INT(11), " + 
+                        " POS_X_VALUE   INT(11), " +
+                        " POS_Y_VALUE   INT(11) )";
           this.stmt.executeUpdate(this.qry);
           this.stmt.close();
           
@@ -172,27 +159,19 @@ public class CSVTranslate  extends JFrame {
                 
                 try {
                     this.conn.setAutoCommit(false);
-                    this.qry = "INSERT INTO BATCHPROCESS values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    this.qry = "INSERT INTO BATCHPROCESS values(?,?,?,?)";
                     PreparedStatement ps = this.conn.prepareStatement(this.qry);
-                    ps.setString(1,data[0]);
-                    ps.setString(2,data[1]);
-                    ps.setString(3,data[2]);
-                    ps.setString(4,data[3]);
-                    ps.setString(5,data[4]);
-                    ps.setString(6,data[5]);
-                    ps.setString(7,data[6]);
-                    ps.setString(8,data[7]);
-                    ps.setString(9,data[8]);
-                    ps.setString(10,data[9]);
-                    ps.setString(11,data[10]);
-                    ps.setString(12,data[11]);
-                    ps.setString(13,data[12]);
-                    ps.setString(14,data[13]);
-                    ps.setString(15,data[14]);
-                    ps.setString(16,data[15]);
-                    ps.setString(17,data[16]);
+                    
+                    int posX = Math.round(Float.parseFloat(data[1]));
+                    int posY = Math.round(Float.parseFloat(data[10]));
+                    
+                    ps.setInt(1,Integer.parseInt(data[7]));
+                    ps.setInt(2,Integer.parseInt(data[6]));
+                    ps.setInt(3,posX);
+                    ps.setInt(4,posY);
                     ps.executeUpdate();
                     
+               
                     
                     //System.out.println(rowCounter);
                     
@@ -244,14 +223,34 @@ public class CSVTranslate  extends JFrame {
           FileWriter fw_txt = new FileWriter(output_directory+"/"+txtFileName+".txt"); 
           // Query table for desired result
           this.stmt = this.conn.createStatement();
-          this.qry = "SELECT * FROM BATCHPROCESS ORDER BY COL8";
+          this.qry = "SELECT * FROM BATCHPROCESS ORDER BY TRACK_ID, TRACK_TIME";
           this.rs = this.stmt.executeQuery(this.qry);
             
           int rowCounter = 1;
           int long_col_num = 1;
           int slice_num = 1;
           
-          String newCol = null;
+          int newCol = 999999999;
+          
+                // Add header to top of txt file.
+                fw_txt.append('\n');
+                
+                //Add csv header
+                fw_csv.append("ROW ID");
+                fw_csv.append(',');
+                fw_csv.append("TRACK ID");
+                fw_csv.append(',');
+                fw_csv.append("TRACK ID GROUP");
+                fw_csv.append(',');
+                fw_csv.append("ORIGINAL TRACK TIME");
+                fw_csv.append(',');
+                fw_csv.append("CORRECTED TRACK TIME");
+                fw_csv.append(',');
+                fw_csv.append("POS X");
+                fw_csv.append(',');
+                fw_csv.append("POS Y");
+                fw_csv.append('\n');
+                
        
           
             while(this.rs.next()){
@@ -259,26 +258,21 @@ public class CSVTranslate  extends JFrame {
                 if(rowCounter % this.tick == 0){
                     int cpv =  this.progressBar.getValue();
                     cpv++;
-                    
-                    System.out.println(cpv);
-                    
+  
                     if(cpv <= 100){
                         this.progressBar.setValue(cpv); 
                     }
                     
                 }
                 
-                if(newCol!= null && !newCol.equals(rs.getString("COL6")) ){
+                if(newCol != 999999999 && newCol != rs.getInt("TRACK_ID") ){
                     long_col_num++;
                     slice_num = 1;
                 }
                 
-                newCol = rs.getString("COL6");
+                newCol = rs.getInt("TRACK_ID");
                 
-                int col2 = Math.round(Float.parseFloat(this.rs.getString("COL2")));
-                int col11 = Math.round(Float.parseFloat(this.rs.getString("COL11")));
                 
-                //System.out.println(col11);
                 //tabbed seperated txt file line data
                 fw_txt.append(Integer.toString(rowCounter));
                 fw_txt.append('\t');
@@ -286,24 +280,28 @@ public class CSVTranslate  extends JFrame {
                 fw_txt.append('\t');
                 fw_txt.append(Integer.toString(slice_num));
                 fw_txt.append('\t');
-                fw_txt.append(Integer.toString(col11));
+                fw_txt.append(Integer.toString(rs.getInt("POS_X_VALUE")));
+                fw_txt.append('\t');
+                fw_txt.append(Integer.toString(rs.getInt("POS_Y_VALUE")));
                 fw_txt.append('\n');
                
+                
                 //comma seperated csv file line data
                 fw_csv.append(Integer.toString(rowCounter));
                 fw_csv.append(',');
-                fw_csv.append(this.rs.getString("COL8"));
+                fw_csv.append(Integer.toString(rs.getInt("TRACK_ID")));
                 fw_csv.append(',');
                 fw_csv.append(Integer.toString(long_col_num));
                 fw_csv.append(',');
-                fw_csv.append(this.rs.getString("COL7"));
+                fw_csv.append(Integer.toString(rs.getInt("TRACK_TIME")));
                 fw_csv.append(',');
                 fw_csv.append(Integer.toString(slice_num));
                 fw_csv.append(',');
-                fw_csv.append(Integer.toString(col2));
+                fw_csv.append(Integer.toString(rs.getInt("POS_X_VALUE")));
                 fw_csv.append(',');
-                fw_csv.append(Integer.toString(col11));
+                fw_csv.append(Integer.toString(rs.getInt("POS_Y_VALUE")));
                 fw_csv.append('\n');
+                
                 
                rowCounter++;
                slice_num++;
@@ -327,7 +325,6 @@ public class CSVTranslate  extends JFrame {
         }
         
         this.progressBar.setValue(100);
-        System.out.println("Output file");
     }
     
     public void deleteDir(File file) {
