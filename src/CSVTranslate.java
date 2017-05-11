@@ -52,14 +52,12 @@ public class CSVTranslate  extends JFrame {
         
         int currentFileIndex = 1;
         
-        
-        
         for (File file : selectedFiles) {
             
             this.startTime = System.currentTimeMillis();
             this.progressBar.setValue(0);
             
-            label.setText("Processing file "+currentFileIndex+" of "+totalFiles+": '"+ file + "'");
+            label.setText("Processing file "+currentFileIndex+" of "+totalFiles+": '"+ file.getName() + "'");
             
             //Count file lines so we can use for progress bar
             try {
@@ -71,13 +69,13 @@ public class CSVTranslate  extends JFrame {
             this.tick = Math.round(this.totalLines/50);
         
             this.setupDatabase();
+            System.out.println("DB setup done");
             this.importCSVToDb(file);
+            System.out.println("DB import done");
             this.outputFiles(file);
             
             
             this.endTime = System.currentTimeMillis();
-           
-            System.out.println("Finished for file : "+ file);
             System.out.println("Total execution time: " + (this.endTime - this.startTime) + "ms");
             this.progressBar.setValue(0);
             currentFileIndex++;
@@ -89,7 +87,7 @@ public class CSVTranslate  extends JFrame {
         button.setEnabled(true);
         button.setText("Upload Files");
         
-    }    
+    }
         
     public void setupDatabase(){
         
@@ -108,10 +106,10 @@ public class CSVTranslate  extends JFrame {
           //Create new table for data
           this.stmt = this.conn.createStatement();
           this.qry = "CREATE TABLE BATCHPROCESS " +
-                        "(TRACK_ID   INT(11), " + 
-                        " TRACK_TIME   INT(11), " + 
-                        " POS_X_VALUE   INT(11), " +
-                        " POS_Y_VALUE   INT(11) )";
+                        "(TRACK_ID   INT(15), " + 
+                        " TRACK_TIME   INT(15), " + 
+                        " POS_X_VALUE   INT(15), " +
+                        " POS_Y_VALUE   INT(15) )";
           this.stmt.executeUpdate(this.qry);
           this.stmt.close();
           
@@ -119,8 +117,6 @@ public class CSVTranslate  extends JFrame {
         } catch ( Exception e ) {
           System.err.println( e.getMessage() );
         }
-        
-        System.out.println("Table created successfully");
         
         this.progressBar.setValue(10);
              
@@ -162,23 +158,30 @@ public class CSVTranslate  extends JFrame {
                     this.qry = "INSERT INTO BATCHPROCESS values(?,?,?,?)";
                     PreparedStatement ps = this.conn.prepareStatement(this.qry);
                     
-                    int posX = Math.round(Float.parseFloat(data[1]));
-                    int posY = Math.round(Float.parseFloat(data[10]));
+                    String track_id_str = data[7].trim();
+                    String track_time_str = data[6].trim();
+                    String pos_x_str = data[1].trim();
+                    String pos_y_str = data[10].trim();
                     
-                    ps.setInt(1,Integer.parseInt(data[7]));
-                    ps.setInt(2,Integer.parseInt(data[6]));
-                    ps.setInt(3,posX);
-                    ps.setInt(4,posY);
+                    //If any col blank or without data skip it
+                    if(track_id_str.length() == 0 || track_time_str.length() == 0 || pos_x_str.length() == 0 || pos_y_str.length() == 0){
+                      System.out.println("Converting problem " + rowCounter + " posx " + pos_x_str + " posy " + pos_y_str);
+                      continue;
+                    }
+                    
+                
+                    ps.setInt(1,Integer.parseInt(track_id_str));
+                    ps.setInt(2,Integer.parseInt(track_time_str));
+                    ps.setInt(3,Math.round(Float.parseFloat(pos_x_str)));
+                    ps.setInt(4,Math.round(Float.parseFloat(pos_y_str)));
                     ps.executeUpdate();
                     
-               
-                    
-                    //System.out.println(rowCounter);
                     
                     rowCounter++;
                     //TODO: need to close ps somewhere here
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
+                    System.out.println(ex.getStackTrace());
                 }
             }
                 
@@ -195,10 +198,6 @@ public class CSVTranslate  extends JFrame {
             Logger.getLogger(CSVTranslate.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        //this.progressBar.setValue(50);
-        
-        System.out.println("File imported successfully");
     }
     
     public void outputFiles(File file){
@@ -210,9 +209,10 @@ public class CSVTranslate  extends JFrame {
         String txtFileName = csvFileName.substring(0, pos);
        
         
-        File output_directory = new File("output");
-        this.deleteDir(output_directory);
+       
         
+        File output_directory = new File("output");
+         
         if (!output_directory.exists()) {
             output_directory.mkdir();
         }
@@ -327,15 +327,7 @@ public class CSVTranslate  extends JFrame {
         this.progressBar.setValue(100);
     }
     
-    public void deleteDir(File file) {
-        File[] contents = file.listFiles();
-        if (contents != null) {
-            for (File f : contents) {
-                deleteDir(f);
-            }
-        }
-        file.delete();
-    }
+
     
     public static int countLines(String filename) throws IOException {
         InputStream is = new BufferedInputStream(new FileInputStream(filename));

@@ -42,6 +42,7 @@ public class Home extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(500, 300));
+        setResizable(false);
         setSize(new java.awt.Dimension(500, 300));
 
         jLabel1.setText(".");
@@ -129,6 +130,8 @@ public class Home extends javax.swing.JFrame {
         //Disable button once started processing
         jButton1.setEnabled(false);
         jButton1.setText("Processing...");
+         File output_directory = new File("output");
+         this.deleteDir(output_directory);
         
         
         
@@ -178,7 +181,15 @@ public class Home extends javax.swing.JFrame {
     }
     
     
-    
+    public void deleteDir(File file) {
+        File[] contents = file.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                deleteDir(f);
+            }
+        }
+        file.delete();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
